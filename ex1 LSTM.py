@@ -8,12 +8,15 @@
 n vs.1 型LSTM
 
 """
-
+# 导入包
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import cap
-
+# 显示中文
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+# 随机数种子
 np.random.seed(6)
 
 # %% 导入数据
@@ -241,6 +244,9 @@ for epoch in range(epochs):
         print('Epoch:%3d  Cost:%.6f' % (epoch, error))
 
 plt.plot(range(len(cost)), cost)
+plt.xlabel('迭代次数')
+plt.ylabel('Loss')
+plt.title('误差变化曲线')
 plt.show()
 
 #%% 测试
@@ -332,7 +338,12 @@ for k in range(m):
 pred = np.array(pred).reshape(true.shape)
 pred = minimum + (maximum - minimum) * pred  # 反归一化
 
-plt.plot(range(pred.shape[0]), pred, true)
+plt.plot(range(pred.shape[0]), pred, label='预测值')
+plt.plot(range(pred.shape[0]), true, label='真实值')
+plt.xlabel('月数')
+plt.ylabel('月流量')
+plt.title('飞机月流量预测')
+plt.legend()
 plt.show()
 
 print('预测误差：%.4f' % np.mean(np.abs(pred - true)))

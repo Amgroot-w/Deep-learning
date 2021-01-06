@@ -59,7 +59,7 @@ sigma_prior = 1.0              # 均值sigma的先验
 epsilon_prior = 0.001          # 方差epsilon的先验
 n_samples = 1                  # n_sample
 learning_rate = 0.001          # 学习率
-n_epochs = 100                  # 迭代次数
+n_epochs = 10                  # 迭代次数
 stddev_var = 0.1               # stddev_var
 
 # 2.1 输入层
@@ -154,10 +154,10 @@ sess = tf.Session()  # 开启会话
 sess.run(tf.global_variables_initializer())  # 全局变量初始化
 
 print('******************** 开始训练 ********************')
+errs = []  # 误差
+test_error = []  # 测试集误差
 for n in range(n_epochs):
-    errs = []  # 误差
     weightVar = []
-    test_error = []  # 测试集误差
     for i in range(n_train_batches):
         ob = sess.run([objective, optimize, W2_logsigma, h, y, log_likelihood], feed_dict={
             x: train_data[i * batch_size: (i + 1) * batch_size],
@@ -170,7 +170,7 @@ for n in range(n_epochs):
         test_pred = sess.run(pred, feed_dict={x: test_data})
         test_error.append(1 - np.count_nonzero(test_pred == np.int32(test_target.ravel())) / float(test_data.shape[0]))
 
-    print('Epoch：%d\tLoss: %.4f \t test error: %.4f' % (n, ob[0], test_error[0]))
+    print('Epoch：%d\tLoss: %.4f \t test error: %.4f' % (n, ob[0], test_error[-1]))
 print('******************** 训练完成 ********************')
 
 
@@ -180,6 +180,7 @@ plt.plot(range(len(test_error)), test_error)
 plt.xlabel('迭代次数')
 plt.ylabel('测试集误差')
 plt.title('测试集误差变化曲线')
+plt.savefig(r'Figs\ex4_TestError.png')
 plt.show()
 
 # 5.2 训练集准确率

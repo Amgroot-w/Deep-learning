@@ -93,7 +93,7 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 cost = []  # 记录误差变化
 tf.global_variables_initializer().run()  # 全局变量初始化
 # 开始迭代
-for i in range(5000):
+for i in range(1000):
     # 批训练，取每次训练50张图片
     batch = mnist.train.next_batch(50)
     # 每隔100代展示一次误差
